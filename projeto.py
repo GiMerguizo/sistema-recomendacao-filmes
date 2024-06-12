@@ -64,7 +64,6 @@ class SistemaRecomendacao:
 sistema = SistemaRecomendacao()
 sistema.adicionar_filmes_csv("filmes.csv")
 
-
 # Fazendo a recomendação dos Filmes
 while True:
     filtro = input("\nDeseja filtrar por: \n[1] Gênero e Ano \n[2] Apenas por gênero\n[3] Sair\nOpção: ")
@@ -73,7 +72,18 @@ while True:
         sleep(2)
         break
 
+    generos_existentes = []
+    current = sistema.lista_filmes.head
+    while current:
+        filme = current.value
+        if filme.genero not in generos_existentes:
+            generos_existentes.append(filme.genero)
+        current = current.next
+
     if filtro == '1':
+        print("\nGêneros existentes:")
+        for genero in generos_existentes:
+            print(f"- {genero}")
         genero = input("Digite o gênero desejado: ")
         ano_minimo_str = input("Digite o ano mínimo (opcional): ")
         ano_maximo_str = input("Digite o ano máximo (opcional): ")
@@ -81,6 +91,9 @@ while True:
         ano_maximo = int(ano_maximo_str) if ano_maximo_str else None
         recomendacoes = sistema.recomendar_filmes(genero, ano_minimo, ano_maximo)
     elif filtro == '2':
+        print("\nGêneros existentes:")
+        for genero in generos_existentes:
+            print(f"- {genero}")
         genero = input("Digite o gênero desejado: ")
         recomendacoes = sistema.recomendar_filmes(genero)
     else:
