@@ -10,6 +10,9 @@ class Filme:
         self.ano = ano
         self.avaliacao = avaliacao
 
+    def __str__(self):
+        return f"{self.titulo} ({self.ano}) - Avaliação: {self.avaliacao}"
+
 class SistemaRecomendacao:
     def __init__(self):
         self.arvore_generos = BinaryTree()
@@ -49,8 +52,15 @@ sistema.adicionar_filme(Filme("Pulp Fiction", "Ação", 1994, 8.8))
 sistema.adicionar_filme(Filme("A Bela e a Fera", "Romance", 1991, 8.1))
 sistema.adicionar_filme(Filme("O Rei Leão", "Animação", 1994, 8.5))
 
-print([filme.titulo for filme in sistema.recomendar_filmes("Romance")])
-# Output: ['Titanic', 'A Bela e a Fera']
+while True:
+    genero = input("Digite o gênero desejado (ou 'sair' para encerrar): ")
+    if genero.lower() == 'sair':
+        break
 
-print([filme.titulo for filme in sistema.recomendar_filmes("Ação")])
-# Output: ['Pulp Fiction']
+    recomendacoes = sistema.recomendar_filmes(genero)
+    if recomendacoes:
+        print(f"\nRecomendações para o gênero '{genero}':")
+        for filme in recomendacoes:
+            print(f"\n{filme}")  # Usa a formatação __str__ do Filme
+    else:
+        print(f"Nenhum filme encontrado para o gênero '{genero}'.")
